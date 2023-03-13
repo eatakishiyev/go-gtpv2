@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	var testApn = information_element.ApnIE{
+	var testApn = information_element.Apn{
 		Value: "nokia.bkc.mnc002.mcc400.gprs",
 	}
 

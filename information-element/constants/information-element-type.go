@@ -1,4 +1,4 @@
-package information_element
+package constants
 
 type IEType int
 

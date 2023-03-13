@@ -2,15 +2,17 @@ package information_element
 
 import (
 	"bytes"
+	"go-gtp-v2/information-element/constants"
 	"io"
 	"strings"
 )
 
-type ApnIE struct {
-	Value string
+type Apn struct {
+	Value    string
+	IeHeader InformationElementHeader
 }
 
-func (instance *ApnIE) Decode(data []byte) {
+func (apn *Apn) Decode(data []byte) {
 	reader := bytes.NewReader(data)
 	var apnParts []string
 	for {
@@ -23,12 +25,12 @@ func (instance *ApnIE) Decode(data []byte) {
 		apnParts = append(apnParts, string(apnData))
 	}
 
-	instance.Value = strings.Join(apnParts, ".")
+	apn.Value = strings.Join(apnParts, ".")
 }
 
-func (instance *ApnIE) Encode() []byte {
+func (apn *Apn) Encode() []byte {
 	var encodedData []byte
-	apnParts := strings.Split(instance.Value, ".")
+	apnParts := strings.Split(apn.Value, ".")
 	for _, apnPart := range apnParts {
 		encodedData = append(encodedData, byte(len(apnPart)))
 		encodedData = append(encodedData, apnPart...)
@@ -36,6 +38,10 @@ func (instance *ApnIE) Encode() []byte {
 	return encodedData
 }
 
-func (instance *ApnIE) InformationElementType() IEType {
-	return Apn
+func (apn *Apn) GetType() constants.IEType {
+	return constants.Apn
+}
+
+func (apn *Apn) GetHeader() *InformationElementHeader {
+	return &apn.IeHeader
 }
